@@ -1,6 +1,9 @@
 # blinds_controller_wifi
 This is the component of the project to run on on an ESP8266, interfacing with Blynk.cc
 
+## Requirements
+This project depends on Blynk from Blynk.cc. You can load it using the built-in Arduino library manager, it's in the included library repo.
+
 ## Hardware
 The hardware consists of a NodeMCU ESP8266 dev board, in my case a Version 1.0 (ESP-12E) board. Presumably it should be trivial to use something else.
 
