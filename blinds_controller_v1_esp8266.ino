@@ -32,15 +32,22 @@
 #include <ESP8266WiFi.h>
 #include <BlynkSimpleEsp8266.h>
 
+#include "net_info.h"
+
 // You should get Auth Token in the Blynk App.
 // Go to the Project Settings (nut icon).
-char auth[] = "TOKEN";
+char auth[] = AUTH_TOKEN;
 
 void setup()
 {
   Serial.begin(9600);
-  Blynk.begin(auth, "SSID", "PASSWORD");
+  Blynk.begin(auth, NET_NAME, PASSWORD);
 
+  // Set the pins as output, just to be sure:
+  pinMode(D3, OUTPUT);
+  pinMode(D2, OUTPUT);
+  pinMode(D1, OUTPUT);
+  
   // Make sure the digital pins are low to start, rather than sending the Arduino into a frenzy.
   digitalWrite(D3, LOW);
   digitalWrite(D2, LOW);
@@ -49,16 +56,30 @@ void setup()
 
 // If blynk sends V1, open to midway
 BLYNK_WRITE(V1){
+  // Ensure the pins are low before we right the correct value to middle
+  digitalWrite(D3, LOW);
+  digitalWrite(D2, LOW);
+  digitalWrite(D1, LOW);
+  // If we're writing middle HIGH, it was previously low and this doesn't matter. If we're writing it LOW, we're about to anyway.
+  
   int pinData = param.asInt();
   digitalWrite(D2, pinData);
   Serial.print("Got sig V1, sending D2 val: ");Serial.println(pinData);
 }
 
-/*
+// do the SAME THING for V2, for timer debugging.
+// You can set a non-production timer to V2 for testing, without swapping signals around.
 BLYNK_WRITE(V2){
-  Serial.println("Got sig V2");
+  // Ensure the pins are low before we right the correct value to middle
+  digitalWrite(D3, LOW);
+  digitalWrite(D2, LOW);
+  digitalWrite(D1, LOW);
+  // If we're writing middle HIGH, it was previously low and this doesn't matter. If we're writing it LOW, we're about to anyway.
+  
+  int pinData = param.asInt();
+  digitalWrite(D2, pinData);
+  Serial.print("Got sig V2, sending D2 val: ");Serial.println(pinData);
 }
-*/
 
 void loop()
 {
